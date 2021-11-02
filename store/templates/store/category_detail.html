@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3> Category  {{ category.name }} </h3>
+
+<div class="container">
+    <table class="table table-stripted">
+        <thead>
+         <th>Name </th> <th> Description</th>  <th>Prix</th>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td> {{ product.name}}</td> 
+            <td> {{product.description |slice:"0:30" }}</td> 
+            <td> {{product.price}}</td>
+            <td> <a class="btn btn-success" href="{% url 'product_detail' product.slug %}">details</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+</div>
+{% endblock %}

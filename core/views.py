@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 
 # Create your views here.
@@ -6,7 +7,10 @@ from django.shortcuts import render
 def home(request):
     context = {}
     #
-    return render(request, 'home.html', context)
+    return render(request, 'home/home.html', context)
 
 def contact_form(request):
-    return render(request, 'contact.html', locals())
+    return render(request, 'home/contact.html', locals())
+
+def about(request):
+    return render(request, 'home/about.html', locals())
