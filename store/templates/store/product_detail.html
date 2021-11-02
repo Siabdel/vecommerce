@@ -5,12 +5,11 @@
 {% block content %}
 
 <div class="card" style="width: 18rem;">
-  <img src="/static/upload/hp-elitebook.jpg" class="card-img-top" >
   <img src="{% static  '/' %}{{product.photo}}" class="card-img-top" >
     <div class="card-body">
       <h5 class="card-title">{{ product.name }}</h5>
       <p class="card-text"> {{ product.description }} </p>
-      <a href="#" class="btn btn-primary">Retour home</a>
+      <a href="{% url 'product_list' %}" class="btn btn-primary">Retour home</a>
     </div>
   </div>
 

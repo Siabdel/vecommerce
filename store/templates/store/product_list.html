@@ -3,17 +3,23 @@
 
 {% block content %}
 
-<div class="card" style="width: 18rem;">
+<div class="container">
   <h3> Liste des produits</h3>
-   <table>
-     <thead>
+   <table class="table table-stripted">
+      <thead>
        <th>Name </th> <th> Description</th>  <th>Prix</th>
-       <tr>
+      </thead>
+      <tbody>
         {% for product in products %}
-          <td>product.name</td> <td>product.description[:30]</td> <td></td>
+        <tr>
+          <td> {{ product.name}}</td> 
+          <td> {{product.description |slice:"0:30" }}</td> 
+          <td> {{product.price}}</td>
+          <td> <a class="btn btn-success" href="{% url 'product_detail' product.slug %}">details</a></td>
+        </tr>
         {% endfor %}
-       </tr>
-     </thead>
+      </tbody>
+     
    </table>
 </div>
 
