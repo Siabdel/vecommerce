@@ -7,6 +7,7 @@ def show_cart(request):
     """
     cart details
     """
-    cart = Cart(request)
+    cart_items = Cart(request)
 
-    return render(request, 'cart/cart_detail.html', locals())
+    ## return render(request, 'cart/cart_detail.html', locals())
+    return render(request, 'cart/view_cart.html', locals())

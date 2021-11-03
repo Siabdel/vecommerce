@@ -8,10 +8,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" id="app">
+<div class="container" >
     <h1> Cart : </h1>
 
-    {% for item in cart %}
+    {% for item in cart_items %}
 
         <h1 class="title"> ** {{ item.product.name }}</h1>
         <h1 class="sub-title"> {{ item.product.price }}</h1>

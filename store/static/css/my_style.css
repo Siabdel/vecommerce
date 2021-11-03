@@ -11,3 +11,32 @@ h1 {
     text-align:center;
     color : white;
 } 
+
+
+.no-gutters > [class*="col-"] {
+    padding-right: 0 !important; padding-left: 0 !important;
+}
+.gallery-wrap .img-big-wrap {
+    margin-bottom: 3px;
+}
+
+.gallery-wrap .img-small-wrap .item-gallery {
+    width: 60px; height: 60px; margin: 7px 2px; display: inline-block; overflow: hidden;
+}
+
+.gallery-wrap .img-small-wrap img {
+    max-width: 100%; max-height: 100%; object-fit: cover;
+    border-radius: 4px; cursor: zoom-in;
+}
+.rating-stars { line-height: 1; clear: both; }
+.rating-stars li.stars-active {z-index: 2; top: 0; left: 0;}
+.rating-stars li.stars-active i { color: orange; }
+
+.rating-stars li { display: block; text-overflow: clip;
+    white-space: nowrap; z-index: 1; }
+
+.rating-stars i { font-size: 14px; color: #ccc; display: inline; }
+
+.badge-sale {
+    background-color: #cf5055;
+}

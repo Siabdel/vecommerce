@@ -45,7 +45,10 @@ def api_add_product_tocart(request):
     
     return JsonResponse(json_reponse)
 
-def remove_product(request):
+def remove_item(request):
     """
     """
+    pass
+
+def checkout_cart(request):
     pass
