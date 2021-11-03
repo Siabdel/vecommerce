@@ -156,3 +156,9 @@ STATICFILES_FINDERS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+## Vecommerce 
+
+SESSION_COOKIE_AGE = 86400
+CART_SESSION_ID = 'cart'

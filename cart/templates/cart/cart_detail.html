@@ -3,6 +3,22 @@
 
 {% block title %} Cart | {% endblock %}
 
+{% block extra_javascipt %}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+{% endblock %}
+
 {% block content %}
-    <h1> Cart </h1>
+<div class="container" id="app">
+    <h1> Cart : {{ cart.cart }}</h1>
+
+    {% for product in cart %}
+
+        <h1 class="title"> ** {{ product }}</h1>
+        <h1 class="sub-title"> {{ product.price }}</h1>
+
+    {% endfor %}
+</div>
+    
+
+
 {% endblock %}

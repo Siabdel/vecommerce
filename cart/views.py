@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 
-# Create your views here.
+from store import models
+from .cart import Cart
 
+def show_cart(request):
+    """
+    cart details
+    """
+    cart = Cart(request)
 
-def cart(request):
-    return render(request, 'cart/cart.html')
+    return render(request, 'cart/cart_detail.html', locals())

@@ -1,12 +1,12 @@
 
 
 from django.conf import settings
+from store.models import Product
+ 
+class Cart(object):
 
-session_di = settings['SESSION_COOKIES_AGE']
-
-class cart(object):
     def __init__(self, request) -> None:
-        cart  = request.session.get(settings.SESSION_COOKIES_AGE)
+        cart  = request.session.get(settings.CART_SESSION_ID)
         self.session = request.session
 
         if not cart :
@@ -14,6 +14,23 @@ class cart(object):
         
         self.cart = cart 
     
+    def __iter__(self):
+        product_ids =  self.cart.keys()
+        product_clean_ids = []
+
+        for elem in product_ids :
+            product_clean_ids.append(elem)
+            self.cart[str(elem)]['product'] =  Product.objets.get(pk=elem)
+
+        for item in cart.values() :
+            item['total'] = int(item['price']) * int(item['quantity'])
+            yield item
+
+
+
+    def __len__(self):
+        # la somme des quanitity integreé dans le panier
+        return sum( item['quantity'] for item in self.cart.values())
         
 
     def add(self, product, quantity=1, update_quantity=False ):
@@ -26,9 +43,9 @@ class cart(object):
         if update_quantity :
             self.cart[product_id]['quantity'] = quantity
         else :
-            self.cart[product_id]['quantity'] = quantityself.cart[product_id]['quantity'] + 1
+            self.cart[product_id]['quantity'] = self.cart[product_id]['quantity'] + 1
 
 
 
     def save(self):
-        self.session[session.CART_SESSION_ID] = self.cart
+        self.session[self.session.CART_SESSION_ID] = self.cart

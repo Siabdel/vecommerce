@@ -1,16 +1,86 @@
-# -*- coding: utf-8 -*-
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block content %}
 
-<div class="card" style="width: 18rem;">
-  <img src="{% static  '/' %}{{product.photo}}" class="card-img-top" >
+<div class="container" id="app">
+
+  <div class="card" style="width: 18rem;">
+    <img src="{% static  '/' %}{{product.photo}}" class="card-img-top" >
     <div class="card-body">
       <h5 class="card-title">{{ product.name }}</h5>
       <p class="card-text"> {{ product.description }} </p>
-      <a href="{% url 'product_list' %}" class="btn btn-primary">Retour home</a>
+      <div>
+        {% csrf_token %}
+      <Button @click="addToCart({{product.id }})" class="btn btn-success">Add to cart </Button>
+
+      </div>
+    </div>
+    <div>
+      <a href="{% url 'product_list' %}" class="text-info">Retour home</a>
     </div>
   </div>
+
+</div>
+
+
+{% block extra_javascipt %}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+{% endblock %}
+
+  <script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    var prodcuapp = new Vue({
+        el : "#app",
+        delimeters : [ '[[', ']]' ],
+        data(){
+            return{
+                message : "Welcome V ecommerce",
+            }
+          },
+        // mount
+        mounted(){
+            console.log("Vue mounted !")
+        },
+
+        methods:{
+          addToCart(product_id){
+            console.log("add to cart  product_id = " + product_id);
+
+            let url = '/api/add_to_cart/'
+            let data = {
+                'product_id' : '{{product.id}}', 
+                'quantity': 1,
+                'title': `{{ product.name}}`,
+                }
+
+            
+            fetch(url, {
+              method : 'POST', 
+              headers :{
+                'Content-Type': "application/json",
+                'X-CSRFToken' : csrftoken,
+              },
+              credentials: 'same-origin',
+              body : JSON.stringify(data),
+            })      
+            .then(response => {
+              result = response.json()
+              return result
+            })
+            .then(result =>{
+              console.log("added to cart " + result)  
+            }).catch(function(error){
+              console.log(error)
+            })
+          }, // fin add to cart
+        }
+
+      
+    }) 
+
+</script>
 
   {% endblock %}
