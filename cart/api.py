@@ -45,10 +45,21 @@ def api_add_product_tocart(request):
     
     return JsonResponse(json_reponse)
 
-def remove_item(request):
+def api_remove_item(request):
     """
     """
-    pass
+    json_reponse = { 'success': False}
+    data = json.loads(request.body)
+    product_id  = data.get('product_id')
+    print(product_id)
+    print(data)
+    ## cart cookies
+    cart = Cart(request)
+    cart.remove(product_id)
+
+    json_reponse = { 'success': True}
+        
+    return JsonResponse(json_reponse)
 
 def checkout_cart(request):
     pass

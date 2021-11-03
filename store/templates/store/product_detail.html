@@ -13,8 +13,7 @@
       <p class="card-text"> {{ product.description }} </p>
       <div>
         {% csrf_token %}
-      <Button @click="addToCart({{product.id }})" class="btn btn-success">Add to cart </Button>
-
+        <Button @click="addToCart({{product.id }})" class="btn btn-success">Add to cart </Button>
       </div>
     </div>
     <div>
@@ -76,8 +75,9 @@
               console.log(error)
             })
           }, // fin add to cart
-        }
+        },
 
+        // remove item
       
     }) 
 
