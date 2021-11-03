@@ -20,9 +20,9 @@ class Cart(object):
 
         for elem in product_ids :
             product_clean_ids.append(elem)
-            self.cart[str(elem)]['product'] =  Product.objets.get(pk=elem)
+            self.cart[str(elem)]['product'] =  Product.objects.get(pk=elem)
 
-        for item in cart.values() :
+        for item in self.cart.values() :
             item['total'] = int(item['price']) * int(item['quantity'])
             yield item
 
@@ -44,8 +44,10 @@ class Cart(object):
             self.cart[product_id]['quantity'] = quantity
         else :
             self.cart[product_id]['quantity'] = self.cart[product_id]['quantity'] + 1
+        ## save 
+        self.save()
 
 
 
     def save(self):
-        self.session[self.session.CART_SESSION_ID] = self.cart
+        self.session[settings.CART_SESSION_ID] = self.cart

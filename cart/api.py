@@ -18,11 +18,7 @@ def api_add_product_tocart(request):
     """
     json_reponse = { 'success': False}
     data = json.loads(request.body)
-     ## print 
-    print("#### debug ####")
-    print(data)
-    print(data.get('product_id'))
-
+    
     product_id  = data.get('product_id')
     if not product_id :
         return JsonResponse(json_reponse)
@@ -30,6 +26,11 @@ def api_add_product_tocart(request):
     update = request.POST.get('update')
     quantity = request.POST.get('quantity', 1)
    
+   ## print 
+    print("#### debug ####")
+    print(data)
+    print( product_id )
+
 
     ## cart cookies
     cart = Cart(request)
