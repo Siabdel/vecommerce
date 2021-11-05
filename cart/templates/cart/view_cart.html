@@ -2,41 +2,45 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Your Shopping Cart</h1>
+        <h5>Your Shopping Cart   </h5>
+       
     </div>
     <div class="row" id="app_cart">
+        <h5>Your Shopping Cart </h5>
+      
         <table class="table">
             <thead>
             <th>Name</th>
             <th>Quantity</th>
             <th>Price</th>
-            <th></th>
+            <th> action</th>
             </thead>
-            <tbody>
-            {% for item in cart_items %}
-                <tr>
+            <tbody> 
+                <tr v-for="item in products" :key="item.id">
                     <td>
-                        {{ item.product.name }}
                         <ul>
                             {%  for  variation in item.variations.all %}
                             <li>{{ variation.title }}</li>
                         {% endfor %}
                         </ul>
+                        [[ item.name ]]
                     </td>
 
-                    <td>{{ item.quantity }}</td>
-                    <td>${{ item.product.price }}</td>
+                    <td> [[ item.quantity ]]
+                      <button class="btn btn-info " 
+                      @click.prevent="increment_qte(item.id, item.quantity)"> +</button>
+                    </td>
+                    <td>[[ item.price ]] </td>
                     <td>
-                        <Button @click="remove_item({{ item.id }})" class="btn btn-success">Supprimer </Button>
+                        <Button @click="remove_item(item.id)" class="btn btn-success">Supprimer </Button>
                     </td>
                 </tr>
-            {% endfor %}
             </tbody>
             <tfoot>
             <tr>
                 <td>Total</td>
                 <td></td>
-                <td>${{ order_total }}</td>
+                <td> [[ total ]]</td>
                 <td></td>
             </tr>
             </tfoot>
@@ -51,27 +55,83 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 {% endblock %}
 
+        
   <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
     var prodcuapp = new Vue({
         el : "#app_cart",
-        delimeters : [ '[[', ']]' ],
+        delimiters: ['[[', ']]'],
+        
         data(){
             return{
                 message : "Welcome V ecommerce",
+                product : {'id':null, 'name': '', 'quantity':1, 'price':0},
+                total : 999,
+                products :[],
+
             }
           },
         // mount
         mounted(){
-            console.log("Vue mounted !")
+            let url = '/api/get_products/'
+            // fetchons ...
+            fetch(url, {
+              method : 'GET',
+              headers :{
+                'Content-Type': "application/json",
+                'X-CSRFToken' : csrftoken,
+              },
+              credentials: 'same-origin',
+              //body : JSON.stringify(data),
+              }) 
+            .then(response=>{
+              result = response.json();
+              console.log("Vue mounted !", result)
+              return result
+            })
+            .then( result => {
+              console.log("resulat = " + result);
+              this.products = result
+            })
+            .catch(error=>console.log("attenton erreur !" + error))
+      
         },
 
         methods:{
+        // incremente qte 
+        increment_qte(product_id, qte){
+          console.log("incremente qte = " + qte);
+
+          let url = '/api/incremente_quantity/'
+          let data = {
+              'product_id' : product_id, 
+              'quantity': parseInt(qte) + 1,
+              }
+
           
+          fetch(url, {
+            method : 'POST', 
+            headers :{
+              'Content-Type': "application/json",
+              'X-CSRFToken' : csrftoken,
+            },
+            credentials: 'same-origin',
+            body : JSON.stringify(data),
+            })      
+            .then(response => {
+              result = response.json()
+              return result
+            })
+            .then(result =>{
+              console.log("updated qte " + result)  
+            }).catch(function(error){
+              console.log(error)
+            })
+        }, // fin increment_qte
+
         // remove item
         remove_item(product_id){
-          console.log("remove item = " + product_id);
+          console.log("remove item = " + product_id)
 
           let url = '/api/remove_item/'
           let data = {

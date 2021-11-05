@@ -1,5 +1,6 @@
 
-
+import os
+import json
 from django.conf import settings
 from store.models import Product
  
@@ -56,7 +57,35 @@ class Cart(object):
             del self.cart[product_id]
             # save
             self.save()
-        
+    
+    def update_qte(self, product_id, quantity):
+        """
+        """
+        product_id  = str(product_id) 
+        if product_id in self.cart :
+            self.cart[product_id]['quantity'] = quantity
+
+            
+            # save
+            self.save()
 
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
+        #print("apres ", self.session[settings.CART_SESSION_ID])
+    
+    @staticmethod
+    def json_export(cart):
+        products = []
+
+        for item in cart :
+            product = item['product']
+            ligne = "{'id': '%s', 'name': '%s', 'quantity':'%s', 'price':'%s'}" % (
+                    product.id, 
+                    product.name, 
+                    1,
+                    product.price
+            )
+            products.append(ligne)
+            
+        #new_p = dict(zip(row, values))
+        return json.dumps(products)
