@@ -25,15 +25,15 @@
                         </ul>
                         [[ item.name ]]
                     </td>
-
-                    <td> [[ item.quantity ]]
+                    <td> 
                       <button class="btn btn-info " 
-                      @click.prevent="increment_qte(item.id, item.quantity)"> +</button>
+                      @click.prevent="update_qte(item.id, item.quantity, -1)">-</button>
+                      [[ item.quantity ]]
+                      <button class="btn btn-info " 
+                      @click.prevent="update_qte(item.id, item.quantity, 1)"> +</button>
                     </td>
                     <td>[[ item.price ]] </td>
-                    <td>
-                        <Button @click="remove_item(item.id)" class="btn btn-success">Supprimer </Button>
-                    </td>
+                    <td><Button @click="remove_item(item.id)" class="btn btn-success">Supprimer</Button></td>
                 </tr>
             </tbody>
             <tfoot>
@@ -99,16 +99,15 @@
 
         methods:{
         // incremente qte 
-        increment_qte(product_id, qte){
+        update_qte(product_id, qte, plus=1){
           console.log("incremente qte = " + qte);
 
           let url = '/api/incremente_quantity/'
+          
           let data = {
               'product_id' : product_id, 
-              'quantity': parseInt(qte) + 1,
+              'quantity': parseInt(qte) + plus,
               }
-
-          
           fetch(url, {
             method : 'POST', 
             headers :{
@@ -123,12 +122,18 @@
               return result
             })
             .then(result =>{
-              console.log("updated qte " + result)  
+              for(i=0; i < this.products.length;  i++){
+                if (product_id === this.products[i]['id'] ){
+                  this.products[i]['quantity'] = parseInt(this.products[i]['quantity']) + plus
+                  console.log("updated qte " + this.products[i]['quantity'] ) 
+
+                }
+              }
             }).catch(function(error){
               console.log(error)
             })
         }, // fin increment_qte
-
+         
         // remove item
         remove_item(product_id){
           console.log("remove item = " + product_id)
