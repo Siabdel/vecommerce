@@ -10,6 +10,7 @@ urlpatterns = [
     path('remove_item/', api.api_remove_item, name='remove_from_cart'),
     path('incremente_quantity/', api.api_increment_quatity, name='api_incremente_quatity'),
     path('get_products/', api.api_get_products, name='api_get_products'),
+    path('get_items_count/', api.api_get_items_count, name='api_get_items_count'),
 
     ## checkout 
     path('checkout)', api.checkout_cart, name='checkout'),

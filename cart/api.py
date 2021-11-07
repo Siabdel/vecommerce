@@ -86,7 +86,8 @@ def api_remove_item(request):
     return JsonResponse(json_reponse)
 
 def checkout_cart(request):
-    pass
+    json_reponse = { 'success': True}
+    return JsonResponse(json_reponse)
 
 def  api_increment_quatity(request):
     cart = Cart(request)
@@ -104,3 +105,11 @@ def  api_increment_quatity(request):
     return JsonResponse(json_reponse)
 
 
+def api_get_items_count(request):
+    products =  Cart(request)
+    nbItems = sum(int(elem['quantity'])  for elem in products )
+    json_reponse = { 
+        'success': True,
+        'cartShoppingCount' : nbItems,
+    }
+    return JsonResponse(json_reponse)

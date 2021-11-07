@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 
+{% block extra_javascipt %}
+{% endblock %}
+
 {% block content %}
     <div class="page-header">
         <h5>Your Shopping Cart   </h5>
@@ -51,16 +54,17 @@
         <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
     </div>
 
-{% block extra_javascipt %}
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-{% endblock %}
-
         
+{% endblock content %}
+
+
+{% block extra_vuejs %}
   <script>
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var prodcuapp = new Vue({
         el : "#app_cart",
         delimiters: ['[[', ']]'],
+        store : store,
         
         data(){
             return{
@@ -71,6 +75,9 @@
 
             }
           },
+        created(){
+          store.commit('getProductsCount')
+        },
         // mount
         mounted(){
             let url = '/api/get_products/'
@@ -100,14 +107,21 @@
         methods:{
         // incremente qte 
         update_qte(product_id, qte, plus=1){
-          console.log("incremente qte = " + qte);
+          //console.log("incremente qte = " + qte);
 
           let url = '/api/incremente_quantity/'
+          if(qte == 0 && plus == -1){
+            return false
+          }
           
           let data = {
               'product_id' : product_id, 
               'quantity': parseInt(qte) + plus,
               }
+          // appel a store vues 
+          store.commit('increment', 10)
+          store.commit('getProductsCount')
+
           fetch(url, {
             method : 'POST', 
             headers :{
@@ -124,9 +138,8 @@
             .then(result =>{
               for(i=0; i < this.products.length;  i++){
                 if (product_id === this.products[i]['id'] ){
-                  this.products[i]['quantity'] = parseInt(this.products[i]['quantity']) + plus
-                  console.log("updated qte " + this.products[i]['quantity'] ) 
-
+                    this.products[i]['quantity'] = parseInt(this.products[i]['quantity']) + plus
+                    //console.log("updated qte " + this.products[i]['quantity'] ) 
                 }
               }
             }).catch(function(error){
@@ -170,5 +183,5 @@
 
 </script>
 
-{% endblock content %}
+{% endblock extra_vuejs %}
 
